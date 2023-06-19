@@ -1,26 +1,3 @@
-let weather = {
-  paris: {
-    temp: 19.7,
-    humidity: 80,
-  },
-  tokyo: {
-    temp: 17.3,
-    humidity: 50,
-  },
-  lisbon: {
-    temp: 30.2,
-    humidity: 20,
-  },
-  "san francisco": {
-    temp: 20.9,
-    humidity: 100,
-  },
-  oslo: {
-    temp: -5,
-    humidity: 20,
-  },
-};
-
 function getFormattedTime() {
   let today = new Date();
   let formattedCurrentTime = `
@@ -46,15 +23,30 @@ function getFormattedDay() {
   ];
   return dayArr[currentDay];
 }
-function getOpenCageData(response) {
-  debugger;
+function fahrenheitToCelsius(faren) {
+  let celsius = ((faren - 32) * 5) / 9;
+  return Math.round(celsius);
+}
+function updateWeatherInfo(response) {
   console.log(response);
+  let currentTemp = document.querySelector("#current-temp");
+  let currentWind = document.querySelector("#current-wind");
+  let currentHumidity = document.querySelector("#current-Humidity");
+  currentTemp.innerHTML = Math.round(response.data.main.temp);
+  currentHumidity.innerHTML = response.data.main.humidity;
+  currentWind.innerHTML = Math.round(response.data.wind.speed);
+}
+function callWeatherApi(lat, lng) {
+  let weatherApiKey = "e1b334efc708d6c7e381a6a3dcb1bfa7";
+  let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${weatherApiKey}&units=metric`;
+  axios.get(url).then(updateWeatherInfo);
+}
+function getOpenCageData(response) {
   let latitude = response.data.results[0].geometry.lat;
   let longitude = response.data.results[0].geometry.lng;
-  console.log(`latitide: + ${latitude}, longitude: ${longitude}`);
+  callWeatherApi(latitude, longitude);
 }
 function getTownCoords() {
-  debugger;
   let openCageApi = "1568bf3564eb4debbcfc44fb36ca98a4";
   let cityName = getCityName();
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${cityName}&key=${openCageApi}`;
@@ -70,7 +62,6 @@ function btnSearchAction(event) {
   textBoxCity = getCityName();
   let cityNamelabel = document.querySelector("#cityLabel");
   cityNamelabel.innerHTML = textBoxCity;
-  debugger;
   getTownCoords();
 }
 function addCurrentDateTime() {
