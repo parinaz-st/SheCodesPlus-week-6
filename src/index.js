@@ -28,7 +28,6 @@ function fahrenheitToCelsius(faren) {
   return Math.round(celsius);
 }
 function updateWeatherInfo(response) {
-  console.log(response);
   let currentTemp = document.querySelector("#current-temp");
   let currentWind = document.querySelector("#current-wind");
   let currentHumidity = document.querySelector("#current-Humidity");
