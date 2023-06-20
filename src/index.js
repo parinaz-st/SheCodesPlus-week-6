@@ -32,9 +32,11 @@ function updateWeatherInfo(response) {
   let currentTemp = document.querySelector("#current-temp");
   let currentWind = document.querySelector("#current-wind");
   let currentHumidity = document.querySelector("#current-Humidity");
+  let currentDescription = document.querySelector("#current-descrion");
   currentTemp.innerHTML = Math.round(response.data.main.temp);
   currentHumidity.innerHTML = response.data.main.humidity;
   currentWind.innerHTML = Math.round(response.data.wind.speed);
+  currentDescription.innerHTML = response.data.weather[0].description;
 }
 function callWeatherApi(lat, lng) {
   let weatherApiKey = "e1b334efc708d6c7e381a6a3dcb1bfa7";
